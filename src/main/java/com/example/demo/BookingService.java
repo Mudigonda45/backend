@@ -26,14 +26,17 @@ public class BookingService {
         emailService.sendPaymentMail(file);
     }
 
-    public Booking saveBooking(Booking booking){
-
+    public Booking saveBooking(Booking booking) {
         Booking savedBooking = repository.save(booking);
 
-        emailService.sendBookingMail(savedBooking);
+        try {
+            emailService.sendBookingMail(savedBooking);
+        } catch (Exception e) {
+            // log error but do NOT fail the booking
+            System.err.println("Email sending failed: " + e.getMessage());
+        }
 
         return savedBooking;
-
     }
 
 }
