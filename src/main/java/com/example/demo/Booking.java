@@ -78,6 +78,11 @@ public class Booking {
     private LocalDate pickupDate;
     private LocalDate returnDate;
 
+    public byte[] getPaymentScreenshot() {
+        return paymentScreenshot;
+    }
+
     public void setPaymentScreenshot(byte[] bytes) {
+        this.paymentScreenshot = bytes;
     }
 }
