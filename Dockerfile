@@ -1,12 +1,23 @@
-# Build stage
+# ---------- Build Stage ----------
 FROM maven:3.9.7-eclipse-temurin-21 AS build
-COPY . .
+
+WORKDIR /app
+
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+COPY src ./src
+
 RUN mvn clean package -DskipTests
 
-# Run stage
-FROM eclipse-temurin:17-jdk
-COPY --from=build /target/*.jar app.jar
+
+# ---------- Run Stage ----------
+FROM eclipse-temurin:21-jdk
+
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
