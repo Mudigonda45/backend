@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 //import org.springframework.data.annotation.Id;
 import java.time.LocalDate;
@@ -75,7 +76,10 @@ public class Booking {
 
     private Long carId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate pickupDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate returnDate;
 
     public byte[] getPaymentScreenshot() {
