@@ -30,7 +30,7 @@ public class BookingService {
 
         Booking savedBooking = repository.save(booking);
 
-        //emailService.sendBookingMail(savedBooking);
+        emailService.sendBookingMail(savedBooking);
 
         return savedBooking;
 
