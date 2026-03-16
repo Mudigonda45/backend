@@ -73,7 +73,7 @@ import java.util.Base64;
 @Service
 public class EmailService {
 
-    @Value("${re_acfXspp7_Ndb5jvT6jj3D5pQ4e8DZzx1j}")
+    @Value("${resend.api.key}")
     private String apiKey;
 
     public void sendBookingMail(Booking booking) throws Exception {
