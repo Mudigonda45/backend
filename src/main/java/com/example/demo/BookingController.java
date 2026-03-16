@@ -30,6 +30,7 @@
 package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,17 +44,28 @@ public class BookingController {
 
     // Create a new booking
     @PostMapping("/create")
-    public Booking createBooking(@RequestBody Booking booking){
-        return service.saveBooking(booking);
+    public ResponseEntity<?> createBooking(@RequestBody Booking booking){
+        try {
+            Booking saved = service.saveBooking(booking);
+            return ResponseEntity.ok(saved);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
     }
 
     // Upload payment screenshot for an existing booking
-    @PostMapping("/uploadPayment")
-    public String uploadPayment(@RequestParam("file") MultipartFile file,
-                                @RequestParam("bookingId") Long bookingId) throws Exception {
-
-        service.savePayment(file, bookingId);
-
-        return "Payment Uploaded Successfully";
+    @PostMapping("/uploadPayment/{bookingId}")
+    public ResponseEntity<String> uploadPayment(@PathVariable Long bookingId,
+                                                @RequestParam("file") MultipartFile file) {
+        try {
+            service.savePayment(file, bookingId);
+            return ResponseEntity.ok("Payment Uploaded Successfully");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to upload payment");
+        }
     }
 }

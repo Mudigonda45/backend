@@ -47,6 +47,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 public class BookingService {
 
@@ -56,8 +58,19 @@ public class BookingService {
     @Autowired
     private EmailService emailService;
 
-    // Save new booking and send booking email
+    // Save new booking with overlapping check
     public Booking saveBooking(Booking booking) {
+        // Check if car is already booked for the selected dates
+        List<Booking> overlapping = repository.findOverlappingBookings(
+                booking.getCarId(),
+                booking.getPickupDate(),
+                booking.getReturnDate()
+        );
+
+        if (!overlapping.isEmpty()) {
+            throw new IllegalArgumentException("This car is already booked for the selected dates.");
+        }
+
         Booking savedBooking = repository.save(booking);
 
         try {
