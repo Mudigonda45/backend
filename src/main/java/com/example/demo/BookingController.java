@@ -56,8 +56,8 @@ public class BookingController {
     }
 
     // Upload payment screenshot for an existing booking
-    @PostMapping("/uploadPayment/{bookingId}")
-    public ResponseEntity<String> uploadPayment(@PathVariable Long bookingId,
+    @PostMapping("/uploadPayment")
+    public ResponseEntity<String> uploadPayment(@RequestParam("bookingId") Long bookingId,
                                                 @RequestParam("file") MultipartFile file) {
         try {
             service.savePayment(file, bookingId);
