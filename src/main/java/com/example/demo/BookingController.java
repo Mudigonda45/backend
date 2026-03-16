@@ -42,7 +42,7 @@ public class BookingController {
     @Autowired
     private BookingService service;
 
-    // Create a new booking
+    // Create new booking
     @PostMapping("/create")
     public ResponseEntity<?> createBooking(@RequestBody Booking booking){
         try {
@@ -55,9 +55,9 @@ public class BookingController {
         }
     }
 
-    // Upload payment screenshot for an existing booking
-    @PostMapping("/uploadPayment")
-    public ResponseEntity<String> uploadPayment(@RequestParam("bookingId") Long bookingId,
+    // Upload payment screenshot for a booking
+    @PostMapping("/uploadPayment/{bookingId}")
+    public ResponseEntity<String> uploadPayment(@PathVariable Long bookingId,
                                                 @RequestParam("file") MultipartFile file) {
         try {
             service.savePayment(file, bookingId);

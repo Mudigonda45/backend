@@ -58,9 +58,9 @@ public class BookingService {
     @Autowired
     private EmailService emailService;
 
-    // Save new booking with overlapping check
+    // Save booking with overlapping check
     public Booking saveBooking(Booking booking) {
-        // Check if car is already booked for the selected dates
+        // Check for overlapping bookings
         List<Booking> overlapping = repository.findOverlappingBookings(
                 booking.getCarId(),
                 booking.getPickupDate(),
@@ -82,7 +82,7 @@ public class BookingService {
         return savedBooking;
     }
 
-    // Attach payment screenshot to an existing booking
+    // Upload payment screenshot for existing booking
     public void savePayment(MultipartFile file, Long bookingId) throws Exception {
         Booking booking = repository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found with ID: " + bookingId));
